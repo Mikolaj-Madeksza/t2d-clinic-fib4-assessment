@@ -1,0 +1,56 @@
+table,variable,definition
+encounters,encounter_study_id,Admission linkage key; synthetic identifiers only in examples
+encounters,patient_study_id,Patient linkage key; repeat admissions share the same key
+encounters,admission_date,Admission calendar date
+encounters,discharge_date,Discharge calendar date
+encounters,age_at_admission_calendar_years,Admission year minus birth year; birth year reconstructed for completed-age calculations
+encounters,sex,Recorded sex; female or male in examples
+encounters,clinic,Treating unit: Endocrinology or Diabetology
+encounters,hospitalization_status,discharged qualifies; ongoing does not
+encounters,admission_mode_group,planned qualifies for primary analysis; other modes included only in sensitivity
+encounters,cirrhosis_status_at_encounter,established; suspected; indeterminate; no_documented_cirrhosis_after_review. Assessed at each admission
+encounters,acute_infection_at_fib4_panel,True: documented acute infection active at selected panel; False: no qualifying infection documented; null: uncertain
+encounters,fib4_infection_review_status,completed for known classification; completed_unknown for uncertainty; not_assessable_no_panel when no panel
+encounters,fib4_infection_reason,Uncertainty reason: infection_timing_or_nature_unresolved; antimicrobial_indication_or_timing_unresolved; insufficient_source_context
+encounters,pbc_documented,Primary biliary cholangitis documented; alone does not establish cirrhosis
+encounters,calculated_bmi_kg_m2,Admission BMI calculated from height and weight; kg/m²; fallback after mean eligible in-stay BMI
+encounters,documented_bmi_kg_m2,Documented admission BMI; kg/m²; final fallback
+labs,encounter_study_id,Admission linkage key; synthetic identifiers only in examples
+labs,patient_study_id,Patient linkage key; repeat admissions share the same key
+labs,lab_result_id,Unique laboratory result key; resolves equal collection-time ties
+labs,analyte,Laboratory concept; see code_lists.csv
+labs,value,Numeric result or reporting-limit value
+labs,unit,Laboratory or measurement unit; exact required unit listed in code_lists.csv
+labs,collected_at,Collection timestamp; no reporting-date substitution
+labs,encounter_link_status,linked required for laboratory use
+labs,result_status,parsed required for laboratory use
+labs,comparison_operator,Null for exact result; < or <= allowed only for qualifying CRP limits; censored FIB-4 components excluded
+clinical_history,encounter_study_id,Admission linkage key; synthetic identifiers only in examples
+clinical_history,patient_study_id,Patient linkage key; repeat admissions share the same key
+clinical_history,concept,Clinical concept; pregnancy used in this analysis
+clinical_history,assertion,present qualifies for pregnancy exclusion; explicitly_absent does not
+clinical_history,temporality,historical does not qualify for current pregnancy exclusion
+measurements,encounter_study_id,Admission linkage key; synthetic identifiers only in examples
+measurements,patient_study_id,Patient linkage key; repeat admissions share the same key
+measurements,measurement,body_mass_index used
+measurements,value_quality_status,plausible required
+measurements,unit,Laboratory or measurement unit; exact required unit listed in code_lists.csv
+measurements,measurement_within_encounter_dates,True required for inpatient BMI
+measurements,value_numeric,Positive finite BMI measurement; eligible values averaged within admission
+derived,birth_year,Reconstructed from admission year minus calendar-year age
+derived,age_admission,Completed years at admission under selected birth-date assumption
+derived,age,Completed years at panel sampling
+derived,day,Earliest complete same-day panel date within admission
+derived,has_panel,All three exact positive valid components available on selected date
+derived,all_components,All three components available at any point in index stay; may lack same-day overlap
+derived,enzyme_ok,Selected AST and ALT each at most 200 U/L
+derived,infection,true; false; unknown; or not_assessable without panel
+derived,bmi,Mean eligible inpatient BMI then calculated admission BMI then documented admission BMI
+derived,hba1c,First exact positive valid inpatient HbA1c
+derived,crp_low,Selected panel-day CRP ≤1 mg/dL including qualifying lower reporting limits
+derived,fib4,age × AST / (platelets × square root of ALT)
+derived,lower_cutoff,1.3 through age 65; 2.0 above 65 in primary analysis
+derived,positive,FIB-4 at least age-adapted lower cutoff
+derived,fixed_positive,FIB-4 at least 1.3
+derived,high,FIB-4 greater than 2.67
+derived,category,Lower; Intermediate; Higher; missing if no panel
